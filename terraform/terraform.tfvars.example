@@ -1,0 +1,28 @@
+# Copy this file to terraform.tfvars and fill in real values.
+# Never commit terraform.tfvars - it contains secrets.
+
+aws_region   = "ap-south-1"
+environment  = "prod"
+project_name = "desk-analytics"
+
+# ── VPC ──────────────────────────────────────────────────────────────────────
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.11.0/24", "10.0.12.0/24"]
+availability_zones   = ["ap-south-1a", "ap-south-1b"]
+
+# ── EC2 ──────────────────────────────────────────────────────────────────────
+ec2_instance_type    = "t3.small"
+ec2_ami              = "ami-0f58b397bc5c1f2e8"   # Ubuntu 24.04 LTS, ap-south-1
+key_pair_name        = "your-key-pair-name"       # must exist in AWS already
+allowed_ssh_cidr     = "YOUR_IP/32"               # e.g. "103.21.45.67/32"
+ec2_root_volume_size = 20
+
+# ── RDS ──────────────────────────────────────────────────────────────────────
+db_name                  = "desk_analytics"
+db_username              = "postgres"
+db_password              = "CHANGE_ME_STRONG_PASSWORD"   # use a real password
+db_instance_class        = "db.t3.micro"
+db_allocated_storage     = 20
+db_multi_az              = false
+db_backup_retention_days = 7

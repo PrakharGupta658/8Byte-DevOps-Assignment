@@ -1,0 +1,14 @@
+variable "project_name" { type = string }
+variable "environment" { type = string }
+variable "vpc_id" { type = string }
+variable "public_subnet_id" { type = string }
+variable "alb_security_group_id" { type = string }
+variable "ami" { type = string }
+variable "instance_type" { type = string }
+variable "key_pair_name" { type = string }
+variable "allowed_ssh_cidr" { type = string }
+variable "root_volume_size" { type = number }
+variable "db_host" { type = string }
+variable "db_name" { type = string }
+variable "db_username" { type = string }
+variable "db_password" { type = string }

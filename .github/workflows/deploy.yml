@@ -125,7 +125,7 @@ jobs:
 
       - name: Confirm images pushed
         run: |
-          echo "✅ Images pushed to Docker Hub:"
+          echo "Images pushed to Docker Hub:"
           echo "   ${{ env.IMAGE_PREFIX }}-frontend:latest"
           echo "   ${{ env.IMAGE_PREFIX }}-backend:latest"
           echo "   ${{ env.IMAGE_PREFIX }}-ml:latest"
@@ -166,6 +166,7 @@ jobs:
 
             echo "=== Writing .env file ==="
             cat > .env << ENVEOF
+            DB_HOST=${{ secrets.DB_HOST }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
             IMAGE_TAG=${{ github.sha }}
@@ -188,7 +189,7 @@ jobs:
       - name: Deployment summary
         if: success()
         run: |
-          echo "✅ Deployed to EC2: ${{ secrets.SERVER_HOST }}"
-          echo "🔗 Dashboard: http://${{ secrets.SERVER_HOST }}:3000"
-          echo "📦 Commit: ${{ github.sha }}"
-          echo "👤 Deployed by: ${{ github.actor }}"
+          echo "Deployed to EC2: ${{ secrets.SERVER_HOST }}"
+          echo "Dashboard (via ALB): http://${{ secrets.ALB_DNS_NAME }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployed by: ${{ github.actor }}"

@@ -1,0 +1,12 @@
+# Local Terraform state - never commit (using S3 remote state instead)
+*.tfstate
+*.tfstate.backup
+.terraform/
+# Note: .terraform.lock.hcl is NOT ignored - it should be committed
+# so everyone uses the same provider versions.
+
+# Actual tfvars with secrets - never commit
+terraform.tfvars
+
+# Crash logs
+crash.log

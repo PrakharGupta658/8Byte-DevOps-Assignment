@@ -1,38 +1,17 @@
 # docker-compose.prod.yml
-# Used on the Linux server — pulls pre-built images from Docker Hub
-# instead of building from source.
-# IMAGE_TAG and DOCKERHUB_USERNAME come from the .env file written by GitHub Actions.
+# Used on the EC2 server — pulls pre-built images from Docker Hub.
+# Postgres now runs on RDS (provisioned by Terraform), not as a local container.
+# DB_HOST, DB_PASSWORD, DOCKERHUB_USERNAME, IMAGE_TAG come from the .env file
+# written by GitHub Actions during deploy.
 
 services:
-
-  postgres:
-    image: postgres:16-alpine
-    container_name: desk_postgres
-    restart: always
-    environment:
-      POSTGRES_DB:       desk_analytics
-      POSTGRES_USER:     postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    # Not exposed publicly — only accessible inside Docker network
-    expose:
-      - "5432"
 
   backend:
     image: ${DOCKERHUB_USERNAME}/desk-analytics-backend:${IMAGE_TAG:-latest}
     container_name: desk_backend
     restart: always
-    depends_on:
-      postgres:
-        condition: service_healthy
     environment:
-      DB_URL:                       jdbc:postgresql://postgres:5432/desk_analytics
+      DB_URL:                       jdbc:postgresql://${DB_HOST}:5432/desk_analytics
       DB_USER:                      postgres
       DB_PASSWORD:                  ${DB_PASSWORD}
       SENSOR_API_BASE_URL:          https://flask.claircoair.com/api/v1/desktherm-realtime
@@ -75,5 +54,4 @@ services:
       - "3000:80"
 
 volumes:
-  postgres_data:
   ml_models:
