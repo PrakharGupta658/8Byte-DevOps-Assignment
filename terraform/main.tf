@@ -55,6 +55,15 @@ module "ec2" {
   db_password            = var.db_password
 }
 
+module "monitoring" {
+  source          = "./modules/monitoring"
+  project_name    = var.project_name
+  aws_region      = var.aws_region          # ← add this line
+  ec2_instance_id = module.ec2.instance_id
+  rds_identifier  = module.rds.db_instance_id
+  alb_arn_suffix  = module.alb.alb_arn_suffix
+}
+
 # Allow the EC2 app server to reach RDS on the Postgres port
 resource "aws_security_group_rule" "rds_from_ec2" {
   type                     = "ingress"

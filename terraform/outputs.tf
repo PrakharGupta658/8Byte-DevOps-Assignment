@@ -34,3 +34,6 @@ output "alb_dns_name" {
   description = "DNS name of the Application Load Balancer"
   value       = module.alb.dns_name
 }
+
+output "infra_dashboard" { value = module.monitoring.infra_dashboard_url }
+output "app_dashboard" { value = module.monitoring.app_dashboard_url }
